@@ -6,5 +6,39 @@
 
 
 /*
+.buttonParent {
+display: flex
+margin-bottom: 10px;
+justify-content: space-between;
+margin-top: 20px;
+}
+ 
 
+.button {
+font-size: 20px;
+font—Famity: Roboto;
+letter-spacing: 0px;
+color: #42515f;
+opacity: 1
+background: transparent;
+border: none;
+font-weight: 400px;
+min-wideh: 140px;
+padding: 7px 70px;
+border: 1px solid #707070;
+curser: pointers;
+}
+
+.submitbutton {
+background-color: #f5f5f5;
+margin-right: 30px;
+
+} 
+
+ 
+
+.cancelbutton {
+text-decoration: none;
+text-align: center
+}
 */

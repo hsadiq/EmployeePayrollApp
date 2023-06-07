@@ -48,24 +48,24 @@ body {
     border: 0px solid green;
 }
 
-form{
-width: 65%;
-padding: 44px 60px;
-background: O#ffffff 0% 0% no-repeat padding-box;
-box-shadow: 0px 3px 6px #00000029;
-border: 1px solid #f5f5f5;
-border-radius: 8px;
-opacity: 1;
+form {
+    width: 65%;
+    padding: 44px 60px;
+    background: O#ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border: 1px solid #f5f5f5;
+    border-radius: 8px;
+    opacity: 1;
 
 }
 
-.form-head { 
-font: normal normal bold 24px/37px Roboto; 
-letter-spacing: 0px;
-color: #42515f;
-text-transform: capitalize;
-opacity: 1;
-padding-bottom: 20px;
+.form-head {
+    font: normal normal bold 24px/37px Roboto;
+    letter-spacing: 0px;
+    color: #42515f;
+    text-transform: capitalize;
+    opacity: 1;
+    padding-bottom: 20px;
 }
 
 .profile-radio-content {
@@ -73,7 +73,7 @@ padding-bottom: 20px;
     flex-direction: row;
 }
 
-.profile-radio-content > label {
+.profile-radio-content>label {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -88,9 +88,9 @@ padding-bottom: 20px;
 body {
     margin: 0;
     height: 100%;
-  }
-  
-  .row-content {
+}
+
+.row-content {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -102,18 +102,57 @@ body {
     align-items: center;
 }
 
-.row-content > label {
+.row-content>label {
     margin-right: 10px;
 }
 
 
 select {
-padding: 12px;
-border: 1px solid #ccc;
-border-radius: 4px;
-resize: vertical;
-font: normal normal normal 16px Roboto;
-letter-spacing: 0px;
-color : #425151;
-background-color: transparent;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font: normal normal normal 16px Roboto;
+    letter-spacing: 0px;
+    color: #425151;
+    background-color: transparent;
 }
+
+
+
+.buttonParent {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    margin-top: 20px;
+    }
+     
+    
+    .button {
+    font-size: 20px;
+    font-family: Roboto;
+    letter-spacing: 0px;
+    color: #42515f;
+    opacity: 1;
+    background : transparent;
+    border: none;
+    font-weight: 400px;
+    min-width: 140px;
+    padding: 7px 70px;
+    border: 1px solid #707070;
+    cursor: pointers;
+    }
+    
+    .submitbutton {
+    background-color: #f5f5f5;
+    margin-right: 30px;
+
+    } 
+    
+     
+    
+    .cancelbutton {
+    margin-left: 140px;
+    text-decoration: none;
+    text-align: center
+    }

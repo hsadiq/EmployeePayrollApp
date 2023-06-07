@@ -29,29 +29,33 @@
                 <label class="label-text" for="name">Name</label>
                 <input class="input" type="text" id="name" name="name" placeholder="Your Name.." required>
             </div>
-            
+
             <div class="row-content">
                 <label class="label-text" for="profile">Profile image</label>
                 <div class="profile-radio-content">
                     <label>
-                        <input type="radio" id="profile1" name="profile" value="../assets/profile-images/Ellipse -3.png" required>
+                        <input type="radio" id="profile1" name="profile" value="../assets/profile-images/Ellipse -3.png"
+                            required>
                         <img class="profile" id='image1' src="../assets/profile-images/Ellipse -3.png">
                     </label>
                     <label>
-                        <input type="radio" id="profile2" name="profile" value="./assets/profile-images/Ellipse 1.png" required>
+                        <input type="radio" id="profile2" name="profile" value="./assets/profile-images/Ellipse 1.png"
+                            required>
                         <img class="profile" id='image2' src="/assets/profile-images/Ellipse 1.png">
                     </label>
                     <label>
-                        <input type="radio" id="profile3" name="profile" value="./assets/profile-images/Ellipse -8.png" required>
+                        <input type="radio" id="profile3" name="profile" value="./assets/profile-images/Ellipse -8.png"
+                            required>
                         <img class="profile" id='image3' src="../assets/profile-images/Ellipse -8.png">
                     </label>
                     <label>
-                        <input type="radio" id="profile4" name="profile" value="../assets/profile-images/Ellipse -7.png" required>
+                        <input type="radio" id="profile4" name="profile" value="../assets/profile-images/Ellipse -7.png"
+                            required>
                         <img class="profile" id="image4" src="../assets/profile-images/Ellipse -7.png">
                     </label>
                 </div>
             </div>
-            
+
             <div class="row-content">
                 <label class="label-text" for="gender">Gender</label>
                 <div>
@@ -61,7 +65,7 @@
                     <label class="text" for="female">Female</label>
                 </div>
             </div>
-            
+
             <div class="row-content">
                 <label class="label-text" for="department">Department</label>
                 <div class="checkbox-content">
@@ -77,15 +81,16 @@
                     <label class="text" for="others">Others</label>
                 </div>
             </div>
-            
+
             <div class="row-content">
                 <label class="label-text" for="salary">Choose your salary: </label>
-                <input class="input" type="range" name="salary" id="salary" min="300000" max="500000" step="100" value="400000">
+                <input class="input" type="range" name="salary" id="salary" min="300000" max="500000" step="100"
+                    value="400000">
                 <output class="salary-output text" for="salary">400000</output>
             </div>
 
             <div class="row-content">
-                <label class="label text" for ="startDate">Start Date</label>
+                <label class="label text" for="startDate">Start Date</label>
                 <div>
                     <select id="day" name="Day">
                         <option value="1">1</option>
@@ -119,8 +124,8 @@
                         <option value="29">29</option>
                         <option value="30">30</option>
                         <option value="31">31</option>
-                      </select>
-                      <select id="month" name="Month">
+                    </select>
+                    <select id="month" name="Month">
                         <option value="Jan">January</option>
                         <option value="Feb">Febuary</option>
                         <option value="March">March</option>
@@ -133,21 +138,33 @@
                         <option value="0ct">October</option>
                         <option value="Nov">Novenber</option>
                         <option value="Dec">Decenber</option>
-                        
-                        </select>
-                        
-                        <select id="year" name="Year">
+
+                    </select>
+
+                    <select id="year" name="Year">
                         <option value="2020">2020</option>
                         <option value="2019">2019</option>
                         <option value="2018">2018</option>
                         <option value="2017">2017</option>
                         <option value="2016">2016</option>
-                        </select>
+                    </select>
                 </div>
-                      
-                </div>
+
             </div>
-        </form>
+
+            <div class="row-content">
+                <label class="label text" for="notes">Notes</label>
+                <textarea id="notes" class="input" name="Notes" placeholder="Optional" style="height: 100px"></textarea>
+            </div>
+            <div class="buttonParent">
+                <a href="./index.html" class="resetButton button cancelButton">Cancel</a>
+                <button type="submit" class="button submitButton" id="submitButton">Submit</button>
+                <button type="reset" class="resetButton button">Reset</button>
+            </div>
+    </div>
+
+    </div>
+    </form>
     </div>
 </body>
 
