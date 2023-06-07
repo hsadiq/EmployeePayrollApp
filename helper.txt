@@ -1,0 +1,50 @@
+/*
+
+ <div class="form-content">
+        <form class="form" action="#" onsubmit="save();return false">
+            <div class="form-head">
+                Employee Payroll Form
+            </div>
+            <div class="row-content">
+                <label class="label-text" for="name">Name</label>
+                <input class="input" type="text" id="name" name="name" placeholder="Your Name.." required>
+            </div>
+        </form>
+    </div>
+
+*/
+
+
+
+/*
+
+.form-content {
+    min-height: calc(100% - 80px);
+    background-color: O#f717f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0px solid green;
+}
+
+form{
+width: 65%;
+padding: 44px 60px;
+background: O#ffffff 0% 0% no-repeat padding-box;
+box-shadow: 0px 3px 6px #00000029;
+border: 1px solid #f5f5f5;
+border-radius: 8px;
+opacity: 1;
+
+}
+
+.form-head { 
+font: normal normal bold 24px/37px Roboto; 
+letter-spacing: 0px;
+color: #42515f;
+text-transform: capitalize;
+opacity: 1;
+padding-bottom: 20px;
+}
+
+*/
