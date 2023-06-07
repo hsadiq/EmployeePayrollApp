@@ -84,3 +84,24 @@ padding-bottom: 20px;
     border-radius: 50%;
     margin-left: 12px;
 }
+
+body {
+    margin: 0;
+    height: 100%;
+  }
+  
+  .row-content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.checkbox-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.row-content > label {
+    margin-right: 10px;
+}
