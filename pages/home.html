@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap" rel="stylesheet">
     <title>Employee Payroll APP</title>
 </head>
+
 <body>
     <header class="header-content header">
         <div class="logo-content">
@@ -28,32 +30,36 @@
         </div>
     </div>
 
-    <table id="display" class="table">
+    <table id="table-display" class="table">
         <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Department</th>
-        <th>salary</th>
-        <th>Start Date</th>
-        <th>action</th>
-        
+            <th></th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>salary</th>
+            <th>Start Date</th>
+            <th>action</th>
+
         </tr>
         <tr>
-        <td><img class="profile" alt="" src="../assets/profile-images/Ellipse -2.png">    
-        </td>
-        <td>Sadiq</td>
-        <td>Male</td>
-        <td><div class=" dept-Label">HR</div>
-        <div class="dept-label">Finance</div></td>
-        <td>3000000</td>
-        <td>1 Nov 2020</td>
-        <td>
-        <img id="1" onclick="renove( this)" alt="delete" src="../assets/icons/delete-black-18dp.svg">
-        <img id="1" alt="edit" onclick="update(this)" src="../assets/icons/create-black-18dp.svg">
-        </td>
-    </tr>
-        </table>
-    
+            <td><img class="profile" alt="" src="../assets/profile-images/Ellipse -2.png">
+            </td>
+            <td>Sadiq</td>
+            <td>Male</td>
+            <td>
+                <div class=" dept-Label">HR</div>
+                <div class="dept-label">Finance</div>
+            </td>
+            <td>3000000</td>
+            <td>1 Nov 2020</td>
+            <td>
+                <img id="1" onclick="remove( this)" alt="delete" src="../assets/icons/delete-black-18dp.svg">
+                <img id="2" alt="edit" onclick="update(this)" src="../assets/icons/create-black-18dp.svg">
+            </td>
+        </tr>
+    </table>
+    <script src="../js/home.js"></script>
+
 </body>
+
 </html>
