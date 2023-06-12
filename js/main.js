@@ -11,27 +11,27 @@ class EmployeePayrollData {
   get name() {
       return this._name;
     }
-    get Profile() {
+    get profile() {
       return this._profile;
     }
   
-    get Gender() {
+    get gender() {
       return this._gender;
     }
   
-    get Departments() {
+    get departments() {
       return this._departments;
     }
   
-    get Salary() {
+    get salary() {
       return this._salary;
     }
   
-    get StartDate() {
+    get startDate() {
       return this._startDate;
     }
   
-    get Notes() {
+    get notes() {
       return this._notes;
     }
   
@@ -43,23 +43,23 @@ class EmployeePayrollData {
         throw "Name is incorrect!";
       }
     }
-    set Profile(profile) {
+    set profile(profile) {
       this._profile = profile;
     }
   
-    set Gender(gender) {
+    set gender(gender) {
       this._gender = gender;
     }
   
-    set Departments(departments) {
+    set departments(departments) {
       this._departments = departments;
     }
   
-    set Salary(salary) {
+    set salary(salary) {
       this._salary = salary;
     }
   
-    set StartDate(startDate) {
+    set startDate(startDate) {
       let currentDate = new Date();
       let joinDate = new Date(startDate);
   
@@ -77,18 +77,17 @@ class EmployeePayrollData {
       this._startDate = startDate;
     }
   
-    set Notes(notes) {
+    set notes(notes) {
       this._notes = notes;
     }
     
     toString() {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      const empDate = !this.startDate ? "undefined":
-      this.startDate. toLocaleDateString("en-US", options);
-      return "id=" + this.id +", name='" + this.name +", gender='" + this.gender +
-      ", profilePic='" + this.profilePic + ", department=" + this.department +
-       ",salary=" + this.salary +", startDate=" + empDate + ", note="+ this.note; 
-    }
+      const empDate = this._startDate ? this._startDate.toLocaleDateString("en-US", options) : "undefined";
+      return "name='" + this._name + ", gender='" + this._gender +
+        ", profilePic='" + this._profile + ", department=" + this._departments +
+        ",salary=" + this._salary + ", startDate=" + empDate + ", note=" + this._notes;
+    }    
   }
 
   window.addEventListener( "DOMContentLoaded", (event) => {
@@ -112,6 +111,9 @@ class EmployeePayrollData {
   salary.addEventListener("input", function() {
   output.textContent = salary.value;
   });
+
+  const submitButton = document.querySelector("#submit");
+  submitButton.addEventListener("click", save);
 });
     
 const save = () => {
@@ -119,44 +121,43 @@ const save = () => {
     let employeePayrollData = createEmployeePayroll();
     console.log("employeePayrollData", employeePayrollData);
     createAndUpdateStorage(employeePayrollData);
-    console.log("All Data: ", JSON.parse(fs.readFileSync("db.json")));
-    fs.writeFileSync('db.json', JSON.stringify(employeePayrollData));
-    console.log('Data saved to db.json successfully!');
   } catch (e) {
+    console.error("Error while saving employee payroll data: ", e);
     return;
   }
 };
 
 function createAndUpdateStorage(employeePayrollData) {
-  let employeePayrollList = JSON.parse(fs.readFileSync("db.json"));
+  let employeePayrollList = JSON.parse(localStorage.getItem("employeePayrollList"));
   if (employeePayrollList != undefined) {
     employeePayrollList.push(employeePayrollData);
   } else {
     employeePayrollList = [employeePayrollData];
   }
   alert(employeePayrollList.toString());
-  fs.writeFileSync("db.json", JSON.stringify(employeePayrollList));
+  localStorage.setItem("employeePayrollList", JSON.stringify(employeePayrollList));
 }
 
+
 const createEmployeePayroll = () => {
-let employeePayrollData = new EmployeePayrollData();
-try {
-employeePayrollData.name = getInputValueById('#name');
-} catch (e) {
-setTextValue('.text-error', e);
-throw e;
-}
-employeePayrollData.profilePic = getSelectedValues(' [name=profile]').pop();
-employeePayrollData.gender = getSelectedValues(' [name=gender]').pop();
-employeePayrollData.department = getSelectedValues(' [name=department] ');
-employeePayrollData.salary = getInputValueById('#salary');
-employeePayrollData.note = getInputValueById('#notes');
-let date = getInputValueById('#day')+" "+getInputValueById('#month')+" "+
-getInputValueById('#year') ;
-employeePayrollData.date = Date.parse(date) ;
-alert(employeePayrollData.toString());
-return employeePayrollData;
-}
+  let employeePayrollData = new EmployeePayrollData();
+  try {
+    employeePayrollData.name = getInputValueById('#name');
+    employeePayrollData.profile = getSelectedValues('[name=profile]').pop();
+    employeePayrollData.gender = getSelectedValues('[name=gender]').pop();
+    employeePayrollData.departments = getSelectedValues('[name=department]');
+    employeePayrollData.salary = getInputValueById('#salary');
+    employeePayrollData.notes = getInputValueById('#notes');
+    let date = getInputValueById('#day') + " " + getInputValueById('#month') + " " + getInputValueById('#year');
+    employeePayrollData.startDate = date;
+    alert(employeePayrollData.toString());
+    return employeePayrollData;
+  } catch (e) {
+    console.error("Error while creating employee payroll data: ", e);
+    throw e;
+  }
+};
+
 
 const getSelectedValues = (propertyValue) => {
 let allItems = document.querySelectorAll(propertyValue) ;
@@ -196,10 +197,6 @@ function populateEmployeeData() {
   } else {
     console.log("Validation Error: Invalid employee data");
   }
-
-  const dbData = JSON.stringify(employeePayrollList);
-  fs.writeFileSync('db.json', dbData);
-  console.log('Data saved to db.json successfully!');
 }
 
 const resetForm = () => {
