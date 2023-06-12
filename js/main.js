@@ -114,27 +114,29 @@ class EmployeePayrollData {
   });
 });
     
-  const save = () => {
-    try {
+const save = () => {
+  try {
     let employeePayrollData = createEmployeePayroll();
-    console.log("employeePayrollData",employeePayrollData);
+    console.log("employeePayrollData", employeePayrollData);
     createAndUpdateStorage(employeePayrollData);
-    console.log("All Data: ",JSON.parse(localStorage.getItem("EmployeePayrollList")));
-    } catch (e) {
+    console.log("All Data: ", JSON.parse(fs.readFileSync("db.json")));
+    fs.writeFileSync('db.json', JSON.stringify(employeePayrollData));
+    console.log('Data saved to db.json successfully!');
+  } catch (e) {
     return;
-    }
   }
+};
 
-  function createAndUpdateStorage(employeePayrollData) {
-    let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
-    if(employeePayrollList != undefined) {
-    employeePayrollList.push(employeePayrollData) ;
-    } else{
-    employeePayrollList = [employeePayrollData]
-    }
-    alert (employeePayrollList.toString());
-    localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList) )
-    }
+function createAndUpdateStorage(employeePayrollData) {
+  let employeePayrollList = JSON.parse(fs.readFileSync("db.json"));
+  if (employeePayrollList != undefined) {
+    employeePayrollList.push(employeePayrollData);
+  } else {
+    employeePayrollList = [employeePayrollData];
+  }
+  alert(employeePayrollList.toString());
+  fs.writeFileSync("db.json", JSON.stringify(employeePayrollList));
+}
 
 const createEmployeePayroll = () => {
 let employeePayrollData = new EmployeePayrollData();
@@ -176,7 +178,6 @@ const getInputElementValue = (id) => {
 }
 
 
-
 function populateEmployeeData() {
   let name = document.getElementById("name").value;
   let profile = document.querySelector("input[name='profile']:checked").value;
@@ -195,6 +196,10 @@ function populateEmployeeData() {
   } else {
     console.log("Validation Error: Invalid employee data");
   }
+
+  const dbData = JSON.stringify(employeePayrollList);
+  fs.writeFileSync('db.json', dbData);
+  console.log('Data saved to db.json successfully!');
 }
 
 const resetForm = () => {
