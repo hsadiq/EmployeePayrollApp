@@ -1,3 +1,14 @@
+class EmployeePayrollData {
+  constructor(name, profile, gender, department, salary, startDate, notes) {
+    this._name = name;
+    this._profile = profile;
+    this._gender = gender;
+    this._department = department;
+    this._salary = salary;
+    this._startDate = startDate;
+    this._notes = notes;
+  }
+}
 window.addEventListener('DOMContentLoaded', (event) => {
   employeePayrollList = getEmployeePayrollDataFromStorage();
   document.querySelector(".emp-count").textContent = employeePayrollList.length;
@@ -57,8 +68,6 @@ const save = () => {
     createAndUpdateStorage(employeePayrollData);
     console.log("All Data: ", JSON.parse(localStorage.getItem("EmployeePayrollList")));
     const dbData = JSON.stringify(employeePayrollData);
-    fs.writeFileSync('db.json', dbData);
-    console.log('Data saved to db.json successfully!');
   } catch (e) {
     return;
   }
@@ -76,6 +85,42 @@ function createAndUpdateStorage(employeePayrollData) {
   resetForm();
   document.querySelector(".emp-count").textContent = employeePayrollList.length;
 }
+
+const createEmployeePayroll = () => {
+  let name = document.getElementById("name").value;
+  let profile = getSelectedValue("[name=profile]");
+  let gender = getSelectedValue("[name=gender]");
+  let departments = getSelectedValues("[name=department]");
+  let salary = document.getElementById("salary").value;
+  let startDate = getDateValue();
+  let notes = document.getElementById("notes").value;
+
+  return new EmployeePayrollData(name, profile, gender, departments, salary, startDate, notes);
+};
+
+const getSelectedValue = (name) => {
+  const element = document.querySelector(name + ":checked");
+  if (element) {
+    return element.value;
+  }
+  return "";
+};
+
+const getSelectedValues = (name) => {
+  const elements = document.querySelectorAll(name + ":checked");
+  const values = [];
+  elements.forEach((element) => {
+    values.push(element.value);
+  });
+  return values;
+};
+
+const getDateValue = () => {
+  const day = document.getElementById("day").value;
+  const month = document.getElementById("month").value;
+  const year = document.getElementById("year").value;
+  return `${day}-${month}-${year}`;
+};
 
 const resetForm = () => {
   console.log("reset form");
