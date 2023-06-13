@@ -62,20 +62,17 @@ class EmployeePayrollData {
     set startDate(startDate) {
       let currentDate = new Date();
       let joinDate = new Date(startDate);
-  
+    
       if (joinDate > currentDate) {
         throw new Error("Start date cannot be a future date");
       }
-  
+    
       let thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
-      if (joinDate < thirtyDaysAgo) {
-        throw new Error("Start date should be within 30 days of joining");
-      }
-  
-      this._startDate = startDate;
+    
+      this._startDate = joinDate;
     }
+    
   
     set notes(notes) {
       this._notes = notes;
@@ -128,16 +125,17 @@ const save = () => {
 };
 
 function createAndUpdateStorage(employeePayrollData) {
-  let employeePayrollList = JSON.parse(localStorage.getItem("employeePayrollList"));
+  let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
   if (employeePayrollList != undefined) {
     employeePayrollList.push(employeePayrollData);
   } else {
     employeePayrollList = [employeePayrollData];
   }
   alert(employeePayrollList.toString());
-  localStorage.setItem("employeePayrollList", JSON.stringify(employeePayrollList));
+  localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList));
+  resetForm();
+  document.querySelector(".emp-count").textContent = employeePayrollList.length;
 }
-
 
 const createEmployeePayroll = () => {
   let employeePayrollData = new EmployeePayrollData();
@@ -228,5 +226,3 @@ const setValue = (id, value) => {
 const element = document. querySelector (id) ;
 element. value = value;
 }
-    
-  

@@ -11,22 +11,23 @@ const getEmployeePayrollDataFromStorage = () => {
 };
 
 const createInnerHtml = () => {
-  const headerHtml = "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
+  const headerHtml =
+    "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
     "<th>Salary</th><th>Start Date</th><th>Actions</th>";
-  if (employeePayrollList.length == 0) return;
+  if (employeePayrollList.length === 0) return;
   let innerHtml = `${headerHtml}`;
   for (const empPayrollData of employeePayrollList) {
     innerHtml = `${innerHtml}
       <tr>
-        <td><img class="profile" src="${empPayrollData._profilePic}" alt=""></td>
+        <td><img class="profile" src="${empPayrollData._profile}" alt=""></td>
         <td>${empPayrollData._name}</td>
         <td>${empPayrollData._gender}</td>
         <td>${getDepartmentHtml(empPayrollData._department)}</td>
         <td>${empPayrollData._salary}</td>
         <td>${stringifyDate(empPayrollData._startDate)}</td>
         <td>
-          <img id="${empPayrollData._id}" onclick="remove(this)" src="../assets/icons/delete-black-18dp.svg" alt="delete">
-          <img id="${empPayrollData._id}" onclick="update(this)" src="../assets/icons/create-black-18dp.svg" alt="edit">
+          <img id="${empPayrollData._name}" onclick="removeEmployee(this)" src="../assets/icons/delete-black-18dp.svg" alt="delete">
+          <img id="${empPayrollData._name}" onclick="updateEmployee(this)" src="../assets/icons/create-black-18dp.svg" alt="edit">
         </td>
       </tr>`;
   }
@@ -42,27 +43,17 @@ const getDepartmentHtml = (departmentList) => {
   return departmentHtml;
 };
 
-const remove = (element) => {
-  const employeeIndex = employeePayrollList.findIndex((employee) => employee.id === element.id);
-  if (employeeIndex !== -1) {
-    employeePayrollList.splice(employeeIndex, 1);
-    createInnerHtml();
-  }
+const removeEmployee = (employee) => {
+  let employeeIndex = employeePayrollList.findIndex(emp => emp._name === employee.id);
+  if (employeeIndex === -1) return;
+  employeePayrollList.splice(employeeIndex, 1);
+  localStorage.setItem('EmployeePayrollList', JSON.stringify(employeePayrollList));
+  document.querySelector(".emp-count").textContent = employeePayrollList.length;
+  createInnerHtml();
 };
 
-const save = () => {
-  try {
-    let employeePayrollData = createEmployeePayroll();
-    console.log("employeePayrollData", employeePayrollData);
-    createAndUpdateStorage(employeePayrollData);
-    console.log("All Data: ", JSON.parse(localStorage.getItem("EmployeePayrollList")));
-    const dbData = JSON.stringify(employeePayrollData);
-    fs.writeFileSync('db.json', dbData);
-    console.log('Data saved to db.json successfully!');
-  } catch (e) {
-    return;
-  }
-};
+
+
 
 function createAndUpdateStorage(employeePayrollData) {
   let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
@@ -76,19 +67,6 @@ function createAndUpdateStorage(employeePayrollData) {
   resetForm();
   document.querySelector(".emp-count").textContent = employeePayrollList.length;
 }
-
-const resetForm = () => {
-  console.log("reset form");
-  setValue('#name', '');
-  unsetSelectedValues('[name=profile]');
-  unsetSelectedValues('[name=gender]');
-  unsetSelectedValues('[name=department]');
-  setValue('#salary', '');
-  setValue('#notes', '');
-  setValue('#day', '1');
-  setValue('#month', 'January');
-  setValue('#year', '2020');
-};
 
 // Helper function to set the value of an element
 const setValue = (id, value) => {
