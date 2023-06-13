@@ -1,92 +1,101 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-  employeePayrollList = getEmployeePayrollDataFromStorage();
-  document.querySelector(".emp-count").textContent = employeePayrollList.length;
-  createInnerHtml();
-  localStorage.removeItem('editEmp');
-});
+let empDataList = [];
 
-const getEmployeePayrollDataFromStorage = () => {
-  return localStorage.getItem('EmployeePayrollList') ?
-    JSON.parse(localStorage.getItem('EmployeePayrollList')) : [];
-};
-
-const createInnerHtml = () => {
-  const headerHtml =
-    "<th></th><th>Name</th><th>Gender</th><th>Department</th>" +
-    "<th>Salary</th><th>Start Date</th><th>Actions</th>";
-  if (employeePayrollList.length === 0) return;
-  let innerHtml = `${headerHtml}`;
-  for (const empPayrollData of employeePayrollList) {
-    innerHtml = `${innerHtml}
-      <tr>
-        <td><img class="profile" src="${empPayrollData._profile}" alt=""></td>
-        <td>${empPayrollData._name}</td>
-        <td>${empPayrollData._gender}</td>
-        <td>${getDepartmentHtml(empPayrollData._department)}</td>
-        <td>${empPayrollData._salary}</td>
-        <td>${stringifyDate(empPayrollData._startDate)}</td>
-        <td>
-          <img id="${empPayrollData._name}" onclick="removeEmployee(this)" src="../assets/icons/delete-black-18dp.svg" alt="delete">
-          <img id="${empPayrollData._name}" onclick="updateEmployee(this)" src="../assets/icons/create-black-18dp.svg" alt="edit">
-        </td>
-      </tr>`;
-  }
-  document.querySelector('#table-display').innerHTML = innerHtml;
-};
-
-const getDepartmentHtml = (departmentList) => {
-  if (!departmentList || departmentList.length === 0) return '';
-  let departmentHtml = '';
-  departmentList.forEach((department) => {
-    departmentHtml += `<div class='dept-label'>${department}</div>`;
-  });
-  return departmentHtml;
-};
-
-const removeEmployee = (employee) => {
-  let employeeIndex = employeePayrollList.findIndex(emp => emp._name === employee.id);
-  if (employeeIndex === -1) return;
-  employeePayrollList.splice(employeeIndex, 1);
-  localStorage.setItem('EmployeePayrollList', JSON.stringify(employeePayrollList));
-  document.querySelector(".emp-count").textContent = employeePayrollList.length;
-  createInnerHtml();
-};
-
-
-
-
-function createAndUpdateStorage(employeePayrollData) {
-  let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
-  if (employeePayrollList != undefined) {
-    employeePayrollList.push(employeePayrollData);
-  } else {
-    employeePayrollList = [employeePayrollData];
-  }
-  alert(employeePayrollList.toString());
-  localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList));
-  resetForm();
-  document.querySelector(".emp-count").textContent = employeePayrollList.length;
+function getFromLocalStorage(){
+    let empPayrollDataList = JSON.parse(localStorage.getItem("employeePayrollList"));
+    for(let emp of empPayrollDataList){
+        empDataList.push(emp);
+    }
 }
 
-// Helper function to set the value of an element
-const setValue = (id, value) => {
-  const element = document.querySelector(id);
-  if (element) {
-    element.value = value;
-  }
-};
+window.addEventListener('DOMContentLoaded', (event) => {
+    getFromLocalStorage();
+    createInnerHTML();
+    document.querySelector(".emp-count").textContent = empDataList.length;
+    localStorage.removeItem('editEmp');
+});
 
-// Helper function to unset the selected values of radio buttons or checkboxes
-const unsetSelectedValues = (name) => {
-  const elements = document.querySelectorAll(name);
-  elements.forEach((element) => {
-    element.checked = false;
-  });
-};
+const createInnerHTML = () => {
 
-// Helper function to stringify a date object in "dd-mm-yyyy" format
-const stringifyDate = (date) => {
-  const options = { day: 'numeric', month: 'short', year: 'numeric' };
-  const newDate = !date ? "undefined" : new Date(Date.parse(date)).toLocaleDateString('en-IN', options);
-  return newDate;
-};
+    const headerHTML = "<th></th><th>Name</th><th>Gender</th><th>Department</th><th>salary</th><th>Start Date</th><th>Actions</th>";
+    let tableData = '';
+    for(let empData of empDataList){
+        //console.log("executed loop");
+        tableData = 
+            `${tableData}
+            <tr>
+                <td>
+                    <img src="${empData._profileImage}" class="profile" alt="" />
+                </td>
+                <td>${empData._name}</td>
+                <td>${empData._gender}</td>
+                <td>${getDeptHTML(empData._department)}</td>
+                <td>${empData._salary}</td>
+                <td>${showStartDate(empData._startDate)}</td>
+                <td>
+                    <img src="../assets/icons/delete-black-18dp.svg" id="${empData._id}" onclick="remove(this)" alt="">
+                    <img src="../assets/icons/create-black-18dp.svg" id="${empData._id}" onclick="update(this)" alt="">
+                </td>
+            </tr>
+            `;
+    }
+
+    let innerHTML = `${headerHTML} ${tableData}`;
+
+    document.querySelector('#display').innerHTML = innerHTML;
+
+}
+
+const getDeptHTML = (deptList) => {
+    let deptHTML = '';
+    for(let dept of deptList){
+        deptHTML += `<div class="dept-label">${dept}</div>`;
+    }
+    return deptHTML;
+}
+
+const showStartDate = (dateInput) => {
+    let date = new Date(dateInput);
+    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+}
+
+const remove = (node) => {
+    let empPayrollData = empDataList.find(empData => empData._id == node.id);
+ 
+    if(!empPayrollData)
+        return;
+    
+    const index = empDataList.map(empData => empData._id).indexOf(empPayrollData._id);
+    empDataList.splice(index,1);
+    console.log(empDataList);
+    localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
+    document.querySelector(".emp-count").textContent = empDataList.length;
+    createInnerHTML();
+}
+
+function update(node) {
+    let empPayrollData = empDataList.find(empData => empData._id == node.id);
+
+    if (!empPayrollData)
+        return;
+
+    localStorage.setItem("editEmpId", empPayrollData._id);
+    window.location.replace(site_properties.add_employee_page);
+}
+
+function saveUpdatedEmployee() {
+    let empName = document.getElementById("name").value;
+    let empId = localStorage.getItem("editEmpId");
+    let empPayrollData = empDataList.find(empData => empData._id == empId);
+
+    if (!empPayrollData)
+        return;
+
+    try {
+        empPayrollData.name = empName;
+        localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
+        localStorage.removeItem("editEmpId");
+        window.location.replace(site_properties.home_page);
+    } catch (e) {
+        console.error(e);
+    }
+}
