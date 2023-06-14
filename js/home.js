@@ -1,101 +1,107 @@
-let empDataList = [];
-
-function getFromLocalStorage(){
-    let empPayrollDataList = JSON.parse(localStorage.getItem("employeePayrollList"));
-    for(let emp of empPayrollDataList){
-        empDataList.push(emp);
-    }
-}
-
-window.addEventListener('DOMContentLoaded', (event) => {
-    getFromLocalStorage();
-    createInnerHTML();
-    document.querySelector(".emp-count").textContent = empDataList.length;
-    localStorage.removeItem('editEmp');
-});
-
-const createInnerHTML = () => {
-
-    const headerHTML = "<th></th><th>Name</th><th>Gender</th><th>Department</th><th>salary</th><th>Start Date</th><th>Actions</th>";
-    let tableData = '';
-    for(let empData of empDataList){
-        //console.log("executed loop");
-        tableData = 
-            `${tableData}
-            <tr>
-                <td>
-                    <img src="${empData._profileImage}" class="profile" alt="" />
-                </td>
-                <td>${empData._name}</td>
-                <td>${empData._gender}</td>
-                <td>${getDeptHTML(empData._department)}</td>
-                <td>${empData._salary}</td>
-                <td>${showStartDate(empData._startDate)}</td>
-                <td>
-                    <img src="../assets/icons/delete-black-18dp.svg" id="${empData._id}" onclick="remove(this)" alt="">
-                    <img src="../assets/icons/create-black-18dp.svg" id="${empData._id}" onclick="update(this)" alt="">
-                </td>
-            </tr>
-            `;
-    }
-
-    let innerHTML = `${headerHTML} ${tableData}`;
-
-    document.querySelector('#display').innerHTML = innerHTML;
-
-}
-
-const getDeptHTML = (deptList) => {
-    let deptHTML = '';
-    for(let dept of deptList){
-        deptHTML += `<div class="dept-label">${dept}</div>`;
-    }
-    return deptHTML;
-}
-
-const showStartDate = (dateInput) => {
-    let date = new Date(dateInput);
-    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-}
-
-const remove = (node) => {
-    let empPayrollData = empDataList.find(empData => empData._id == node.id);
- 
-    if(!empPayrollData)
-        return;
-    
-    const index = empDataList.map(empData => empData._id).indexOf(empPayrollData._id);
-    empDataList.splice(index,1);
-    console.log(empDataList);
-    localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
-    document.querySelector(".emp-count").textContent = empDataList.length;
-    createInnerHTML();
-}
-
-function update(node) {
-    let empPayrollData = empDataList.find(empData => empData._id == node.id);
-
-    if (!empPayrollData)
-        return;
-
-    localStorage.setItem("editEmpId", empPayrollData._id);
-    window.location.replace(site_properties.add_employee_page);
-}
-
-function saveUpdatedEmployee() {
-    let empName = document.getElementById("name").value;
-    let empId = localStorage.getItem("editEmpId");
-    let empPayrollData = empDataList.find(empData => empData._id == empId);
-
-    if (!empPayrollData)
-        return;
-
-    try {
-        empPayrollData.name = empName;
-        localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
-        localStorage.removeItem("editEmpId");
-        window.location.replace(site_properties.home_page);
-    } catch (e) {
-        console.error(e);
-    }
-}
+// Define the makeServiceCall function for making HTTP requests
+const makeServiceCall = (method, url, async = true, data = null) => {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200 || xhr.status === 201) {
+            resolve(xhr.responseText);
+          } else {
+            reject(xhr.statusText);
+          }
+        }
+      };
+      xhr.onerror = function () {
+        reject("Network Error");
+      };
+      xhr.open(method, url, async);
+      if (data) {
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(data));
+      } else {
+        xhr.send();
+      }
+    });
+  };
+  
+  let empPayrollList;
+  window.addEventListener('DOMContentLoaded', (event) => {
+      if (site_properties.use_local_storage.match("true")) {
+          getEmployeePayrollDataFromStorage();
+      } else {
+          getEmployeePayrollDataFromServer();
+      }
+  });
+  
+  const processEmployeePayrollDataResponse = () => {
+      document.querySelector(".emp-count").textContent = empPayrollList.length;
+      createInnerHtml();
+      localStorage.removeItem('editEmp');
+  }
+  
+  const getEmployeePayrollDataFromStorage = () => {
+      empPayrollList = localStorage.getItem('EmployeePayrollList') ?
+          JSON.parse(localStorage.getItem('EmployeePayrollList')) : [];
+      processEmployeePayrollDataResponse();
+  }
+  
+  const getEmployeePayrollDataFromServer = () => {
+      makeServiceCall("GET", site_properties.server_url, true)
+          .then(responseText => {
+              empPayrollList = JSON.parse(responseText);
+              processEmployeePayrollDataResponse();
+          })
+          .catch(error => {
+              console.log("GET Error Status: " + JSON.stringify(error));
+              empPayrollList = [];
+              processEmployeePayrollDataResponse();
+          });
+  }
+  
+  /* Template Literal ES6 feature */
+  const createInnerHtml = () => {
+      if (empPayrollList.length == 0) return;
+      const headerHtml = "<th></th><th>Name</th><th>Gender</th><th>Department</th><th>Salary</th><th>Start Date</th><th>Actions</th>";
+      let innerHtml = `${headerHtml}`;
+      for (const empPayrollData of empPayrollList) {
+          innerHtml = `${innerHtml}  
+      <tr>
+      <td><img class="profile" src="${empPayrollData._profilePic}" alt=""></td>
+      <td>${empPayrollData._name}</td>
+      <td>${empPayrollData._gender}</td>
+      <td>${getDeptHtml(empPayrollData._department)}</td> 
+      <td>${empPayrollData._salary}</td>
+      <td>${stringifyDate(empPayrollData._startDate)}</td>
+      <td>
+         <img id="${empPayrollData.id}"  onclick="remove(this)" 
+              src="../Assets/icons/delete-black-18dp.svg" alt="delete">
+         <img id="${empPayrollData.id}"  onclick="update(this)" 
+              src="../Assets/icons/create-black-18dp.svg" alt="edit">  
+      </td>
+      </tr>
+      `;
+      }
+      document.querySelector('#table-display').innerHTML = innerHtml;
+  }
+  
+  const getDeptHtml = (deptList) => {
+      let deptHtml = '';
+      for (const dept of deptList) {
+          deptHtml = `${deptHtml} <div class='dept-label'>${dept}</div>`
+      }
+      return deptHtml;
+  }
+  
+  //D46UC1
+  const remove = (node) => {
+      let empPayrollData = empPayrollList.find(empData => empData.id == node.id);
+      if (!empPayrollData) return;
+      const index = empPayrollList
+          .map(empData => empData.id)
+          .indexOf(empPayrollData.id);
+      empPayrollList.splice(index, 1);
+      localStorage.setItem('EmployeePayrollList', JSON.stringify(empPayrollList));
+      document.querySelector('.emp-count').textContent = empPayrollList.length;
+      createInnerHtml();
+  }
+  

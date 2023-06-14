@@ -23,44 +23,47 @@
     <div id="delete_services" ></div>
     <div id="post_services" ></div>
     <script>
-    const getElen = document.querySelector("#get_services");
-    const getURL = "http://localhost:3001/EmployeePayrollDB.json/1";
+    const getElem = document.querySelector("#get_services");
+    const getURL = "http://localhost:3000/EmployeePayrollDB/1";
     makeServiceCall("GET", getURL, true)
         .then(responseText => {
-            getElen.textContent = "Get User Data: " +responseText;
+            getElem.textContent = "Get User Data: " +responseText;
     })
         .catch(error => {
-            getElen.textContent = "GET Error Status: " +JSON.stringify(error);
+            getElem.textContent = "GET Error Status: " +JSON.stringify(error);
     });
 
-    const deleteElen = document.querySelector("#delete_services");
-    const deleteURL = "http://localhost:3001/EmployeePayrollDB/3";
+    const deleteElem = document.querySelector("#delete_services");
+    const deleteURL = "http://localhost:3000/EmployeePayrollDB/3";
     makeServiceCall("DELETE", deleteURL, false)
         .then(responseText => {
-            deleteElen.textContent = "Delete Data: " +responseText;
+            deleteElem.textContent = "Delete Data: " +responseText;
     })
     .catch(error => {
-        deleteElen.textContent = "DELETE Error Status: " +JSON.stringify(error);
+        deleteElem.textContent = "DELETE Error Status: " +JSON.stringify(error);
     });
 
-    const empPayrollData = {
-  name: 'Amarpa shashanka keerthi kumar',
-  gender: 'female',
-  department: ['Sales'],
-  salary: '400000',
-  startDate: '29 Oct 2019',
-  note: '',
-  profilePic: '../Assets/profile-images/Ellipse -1.png'
-};
+    const empPayrollData = 
+    {
+        _name: 'Amarpa shashanka keerthi kumar',
+        _gender: 'female',
+        _department: [
+            'Sales'
+        ],
+        _salary: '400000',
+        _startDate: '29 Oct 2019',
+        _note: '',
+        _profilePic: '../Assets/profile-images/Ellipse -1.png'
+    };
 
-    const postElen = document.querySelector("#post_services");
-    const postURL = "http://localhost:3001/EmployeePayrollDB.json/";
+    const postElem = document.querySelector("#post_services");
+    const postURL = "http://localhost:3000/EmployeePayrollDB/";
     makeServiceCall("POST", postURL, true, empPayrollData)
         .then(responseText => {
-            postElen.textContent ="New User Data: " +responseText;
+            postElem.textContent ="New User Data: " +responseText;
     })
         .catch(error => {
-            postElen.textContent = "POST Error Status: " +JSON.stringify(error);
+            postElem.textContent = "POST Error Status: " +JSON.stringify(error);
     });
     </script>
 </body>
