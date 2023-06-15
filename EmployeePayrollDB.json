@@ -36,6 +36,32 @@
       "_note": "",
       "_profilePic": "../assets/profile-images/Ellipse -1.png",
       "id": 3
+    },
+    {
+      "_name": "Arbaz Ansari",
+      "_profilePic": "../assets/profile-images/Ellipse -3.png",
+      "_gender": "male",
+      "_department": [
+        "Engineer"
+      ],
+      "_salary": "300000",
+      "_note": "Java",
+      "_startDate": "17 Jan 2021",
+      "id": 4
+    },
+    {
+      "_name": "Ashish Pal",
+      "_profilePic": "../assets/profile-images/Ellipse -8.png",
+      "_gender": "male",
+      "_department": [
+        "HR",
+        "Finance",
+        "Engineer"
+      ],
+      "_salary": "500000",
+      "_note": "Head",
+      "_startDate": "29 Oct 2019",
+      "id": 5
     }
   ]
 }
